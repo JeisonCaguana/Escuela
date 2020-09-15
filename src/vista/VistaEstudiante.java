@@ -15,10 +15,14 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import controlador.Conexion;
+import modelo.ModeloEstudiante;
  
  
 public class VistaEstudiante extends javax.swing.JFrame {
 
+    ModeloEstudiante estudiante;
+
+                    
 Conexion cc= new Conexion();
 Connection cn= cc.conexion();
     public VistaEstudiante() {
@@ -36,42 +40,30 @@ void mostrardatos(String valor){
     modelo.addColumn("DIRECCIÓN");
     modelo.addColumn("GENERO");
     modelo.addColumn("F. NACIMIENTO");
-    TablaMecanico.setModel(modelo);
+    TablaAlumnos.setModel(modelo);
     String sql="";
     if(valor.equals(""))
     {
         sql="SELECT * FROM java_estudiante ";
-    }
-    else{
-        sql="SELECT * FROM java_estudiante WHERE clave LIKE '%"+valor+"%' OR  nombre LIKE '%"+valor+"%' OR domicilio LIKE '%"+valor+"%' OR email LIKE '%"+valor+"%' OR genero LIKE '%"+valor+"%' \n";			
-    }
-
-                    
+    }else{             
+       sql="SELECT * FROM java_estudiante WHERE clave LIKE '%"+valor+"%' OR  nombre LIKE '%"+valor+"%' OR domicilio LIKE '%"+valor+"%' OR email LIKE '%"+valor+"%' OR genero LIKE '%"+valor+"%' \n";			
+    }                    
  
     String []datos = new String [7];
         try {
-
-                                            
             Statement st = cn.createStatement();
-            
-
-            ResultSet rs = st.executeQuery(sql);
-            
-
-                        
+            ResultSet rs = st.executeQuery(sql);                        
             while(rs.next()){
-                datos[0]=rs.getString(2).toString();;
-                datos[1]=rs.getString(3).toString();;
-                datos[2]=rs.getString(4).toString();;
-                datos[3]=rs.getString(5).toString();;
-                datos[4]=rs.getString(6).toString();;
-                datos[5]=rs.getString(7).toString();;
-                datos[6]=rs.getString(8).toString();
-                
-              
+                datos[0]=rs.getString(2);
+                datos[1]=rs.getString(3);
+                datos[2]=rs.getString(4);
+                datos[3]=rs.getString(5);
+                datos[4]=rs.getString(6);
+                datos[5]=rs.getString(7);
+                datos[6]=rs.getString(8);
                 modelo.addRow(datos);
             }
-            TablaMecanico.setModel(modelo);
+            TablaAlumnos.setModel(modelo);
         } catch (SQLException ex) {
             Logger.getLogger(VistaEstudiante.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -91,20 +83,20 @@ void mostrardatos(String valor){
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        txtCedula = new javax.swing.JTextField();
+        txtClave = new javax.swing.JTextField();
         txtNombre = new javax.swing.JTextField();
-        txtApellido = new javax.swing.JTextField();
-        txtEdad = new javax.swing.JTextField();
+        txtDomicilio = new javax.swing.JTextField();
+        txtEmail = new javax.swing.JTextField();
         txtTelefono = new javax.swing.JTextField();
         btnAgregar = new javax.swing.JButton();
         btnNuevo = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        TablaMecanico = new javax.swing.JTable();
+        TablaAlumnos = new javax.swing.JTable();
         txtBuscar = new javax.swing.JTextField();
         tbnActualizar1 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jCalendar1 = new com.toedter.calendar.JCalendar();
+        cbxGenero = new javax.swing.JComboBox<>();
+        jclrFechaNacimiento = new com.toedter.calendar.JCalendar();
         jLabel8 = new javax.swing.JLabel();
 
         eliminar.setText("Eliminar Empleado");
@@ -162,21 +154,21 @@ void mostrardatos(String valor){
         getContentPane().add(jLabel7);
         jLabel7.setBounds(40, 260, 70, 17);
 
-        txtCedula.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        getContentPane().add(txtCedula);
-        txtCedula.setBounds(40, 30, 190, 20);
+        txtClave.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        getContentPane().add(txtClave);
+        txtClave.setBounds(40, 30, 190, 20);
 
         txtNombre.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         getContentPane().add(txtNombre);
         txtNombre.setBounds(40, 80, 190, 20);
 
-        txtApellido.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        getContentPane().add(txtApellido);
-        txtApellido.setBounds(40, 130, 190, 20);
+        txtDomicilio.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        getContentPane().add(txtDomicilio);
+        txtDomicilio.setBounds(40, 130, 190, 20);
 
-        txtEdad.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        getContentPane().add(txtEdad);
-        txtEdad.setBounds(40, 230, 190, 20);
+        txtEmail.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        getContentPane().add(txtEmail);
+        txtEmail.setBounds(40, 230, 190, 20);
 
         txtTelefono.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         getContentPane().add(txtTelefono);
@@ -212,7 +204,7 @@ void mostrardatos(String valor){
         getContentPane().add(btnBuscar);
         btnBuscar.setBounds(840, 110, 100, 25);
 
-        TablaMecanico.setModel(new javax.swing.table.DefaultTableModel(
+        TablaAlumnos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -220,8 +212,8 @@ void mostrardatos(String valor){
                 "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7"
             }
         ));
-        TablaMecanico.setComponentPopupMenu(jPopupMenu1);
-        jScrollPane1.setViewportView(TablaMecanico);
+        TablaAlumnos.setComponentPopupMenu(jPopupMenu1);
+        jScrollPane1.setViewportView(TablaAlumnos);
 
         getContentPane().add(jScrollPane1);
         jScrollPane1.setBounds(260, 150, 700, 300);
@@ -240,11 +232,11 @@ void mostrardatos(String valor){
         getContentPane().add(tbnActualizar1);
         tbnActualizar1.setBounds(260, 80, 100, 23);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hombre", "Mujer" }));
-        getContentPane().add(jComboBox1);
-        jComboBox1.setBounds(40, 280, 190, 20);
-        getContentPane().add(jCalendar1);
-        jCalendar1.setBounds(40, 330, 184, 153);
+        cbxGenero.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hombre", "Mujer" }));
+        getContentPane().add(cbxGenero);
+        cbxGenero.setBounds(40, 280, 190, 20);
+        getContentPane().add(jclrFechaNacimiento);
+        jclrFechaNacimiento.setBounds(40, 330, 184, 153);
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel8.setText("Clave");
@@ -259,77 +251,121 @@ void mostrardatos(String valor){
         mostrardatos(txtBuscar.getText());
     }//GEN-LAST:event_btnBuscarActionPerformed
 
+                
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-//        Mecanico empleado = new Mecanico(txtCedula.getText(), txtNombre.getText(), txtApellido.getText(), txtEdad.getText(), txtTelefono.getText(), txtDirecion.getText(), txtCargo.getText());
-//        empleado.imprimir_mostrat();
-//        try {
-//        PreparedStatement pst = cn.prepareStatement("INSERT INTO mecanico(cedula, nombre, apellido, edad, telf, direccion, cargo) VALUES (?,?,?,?,?,?,?)");
-//        pst.setString(1, txtCedula.getText());
-//        pst.setString(2, txtNombre.getText());
-//        pst.setString(3, txtApellido.getText());
-//        pst.setString(4, txtEdad.getText());
-//        pst.setString(5, txtTelefono.getText());
-//        pst.setString(6, txtDirecion.getText());
-//        pst.setString(7, txtCargo.getText());
-//        
-//        
-//        pst.executeUpdate();
-//        mostrardatos("");
-//    } catch (SQLException e) {
-//        System.out.print(e.getMessage());
-//    }  
+        
+        String invalido ="";
+                    
+        if(txtClave.getText().equals(invalido) ) {
+            JOptionPane.showMessageDialog(null,"Ingese una clave..");
+        }
+        else if(txtNombre.getText().equals(invalido) ) {
+            JOptionPane.showMessageDialog(null,"Ingese una nombre..");
+        }
+        else if(txtDomicilio.getText().equals(invalido) ) {
+            JOptionPane.showMessageDialog(null,"Ingese un domicilio.");
+        }
+        else if(txtTelefono.getText().equals(invalido) ) {
+            JOptionPane.showMessageDialog(null,"Ingese una telefono..");
+        }
+        else if(txtEmail.getText().equals(invalido) ) {
+            JOptionPane.showMessageDialog(null,"Ingese una email..");
+        }else {
+                try { 
+                    PreparedStatement pst = cn.prepareStatement("INSERT INTO java_estudiante(id, clave, nombre, domicilio, telefono, email, fechaNacimiento,genero) VALUES (?,?,?,?,?,?,?,?)");
+                    pst.setString(1, txtClave.getText());
+                    pst.setString(2, txtClave.getText());
+                    pst.setString(3, txtNombre.getText());
+                    pst.setString(4, txtDomicilio.getText());
+                    pst.setString(5, txtTelefono.getText());
+                    pst.setString(6, txtEmail.getText());
+                    pst.setString(7, jclrFechaNacimiento.getDate().toString());
+                    pst.setString(8, cbxGenero.getSelectedItem().toString());
+                    pst.executeUpdate();
+                    mostrardatos("");
+                    limpiar();                    
+                    JOptionPane.showMessageDialog(null,"Ingeso correcto!.");
+            } catch (SQLException e) {
+                System.out.print(e.getMessage());
+            }  
+        }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
+    public void limpiar (){
+        txtClave.setEnabled(true);
+        
+        String borrar="";
+        txtClave.setText(borrar);
+        txtNombre.setText(borrar);
+        txtDomicilio.setText(borrar);
+        txtTelefono.setText(borrar); 
+        txtEmail.setText(borrar); 
+        txtBuscar.setText(borrar);
+    }
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
-//        String borrar="";
-//        txtCedula.setText(borrar);
-//        txtNombre.setText(borrar);
-//        txtApellido.setText(borrar);
-//        txtEdad.setText(borrar);
-//        txtTelefono.setText(borrar);
-//        txtDirecion.setText(borrar);
-//        txtCargo.setText(borrar);
-//        txtBuscar.setText(borrar);
+                    limpiar();
+
     }//GEN-LAST:event_btnNuevoActionPerformed
     private void modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarActionPerformed
-//    int fila= TablaMecanico.getSelectedRow();
-//    if(fila>=0){
-//        txtCedula.setText(TablaMecanico.getValueAt(fila, 0).toString());
-//        txtNombre.setText(TablaMecanico.getValueAt(fila, 1).toString());
-//        txtApellido.setText(TablaMecanico.getValueAt(fila, 2).toString());
-//        txtEdad.setText(TablaMecanico.getValueAt(fila, 3).toString());
-//        txtTelefono.setText(TablaMecanico.getValueAt(fila, 4).toString());
-//        txtDirecion.setText(TablaMecanico.getValueAt(fila, 5).toString());
-//        txtCargo.setText(TablaMecanico.getValueAt(fila, 6).toString());
-//    }
-//    else{
-//    JOptionPane.showMessageDialog(null,"No seleciono fila");
-//    }
+    int fila= TablaAlumnos.getSelectedRow();
+    if(fila>=0){        
+        txtClave.setText(TablaAlumnos.getValueAt(fila, 0).toString());
+        txtClave.setEnabled(false);
+        txtNombre.setText(TablaAlumnos.getValueAt(fila, 1).toString());
+        txtDomicilio.setText(TablaAlumnos.getValueAt(fila, 2).toString());
+        txtTelefono.setText(TablaAlumnos.getValueAt(fila, 3).toString());
+        txtEmail.setText(TablaAlumnos.getValueAt(fila, 4).toString());
+        cbxGenero.setActionCommand(TablaAlumnos.getValueAt(fila, 6).toString());
+    }
+    else{
+    JOptionPane.showMessageDialog(null,"No seleciono fila");
+    }
         
     }//GEN-LAST:event_modificarActionPerformed
 
     private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
-    int fila = TablaMecanico.getSelectedRow();
+    int fila = TablaAlumnos.getSelectedRow();
     String cod="";
-    cod=TablaMecanico.getValueAt(fila, 0).toString();
+    cod=TablaAlumnos.getValueAt(fila, 0).toString();
     try {
-        PreparedStatement pst = cn.prepareStatement("DELETE FROM mecanico WHERE  cedula='"+cod+"'");
+        PreparedStatement pst = cn.prepareStatement("DELETE FROM java_estudiante WHERE  clave='"+cod+"'");
         pst.executeUpdate();
         mostrardatos("");
-    } catch (SQLException e) {
-    }   
+    } catch (SQLException e) {}   
     }//GEN-LAST:event_eliminarActionPerformed
 
     private void tbnActualizar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbnActualizar1ActionPerformed
-//    try {
-//        Mecanico empleado = new Mecanico(txtCedula.getText(), txtNombre.getText(), txtApellido.getText(), txtEdad.getText(), txtTelefono.getText(), txtDirecion.getText(), txtCargo.getText());
-//        empleado.imprimir_mostrat();
-//        PreparedStatement pst = cn.prepareStatement("UPDATE mecanico SET cedula='"+txtCedula.getText()+"',nombre='"+txtNombre.getText()+"',apellido='"+txtApellido.getText()+"',edad='"+txtEdad.getText()+"', telf='"+txtTelefono.getText()+"', direccion='"+txtDirecion.getText()+"', cargo='"+txtCargo.getText()+"' WHERE cedula='"+txtCedula.getText()+"'"); 
-//        pst.executeUpdate(); 
-//        mostrardatos("");
-//    } catch (SQLException e) {
-//        System.out.print(e.getMessage());
-//    }
+
+        String invalido ="";
+        if(txtClave.getText().equals(invalido) ) {
+            JOptionPane.showMessageDialog(null,"Ingese una clave..");
+        }
+        else if(txtNombre.getText().equals(invalido) ) {
+            JOptionPane.showMessageDialog(null,"Ingese una nombre..");
+        }
+        else if(txtDomicilio.getText().equals(invalido) ) {
+            JOptionPane.showMessageDialog(null,"Ingese un domicilio.");
+        }
+        else if(txtTelefono.getText().equals(invalido) ) {
+            JOptionPane.showMessageDialog(null,"Ingese una telefono..");
+        }
+        else if(txtEmail.getText().equals(invalido) ) {
+            JOptionPane.showMessageDialog(null,"Ingese una email..");
+        }else {            
+                try {
+                    
+                    PreparedStatement pst = cn.prepareStatement("UPDATE java_estudiante SET nombre='"+txtNombre.getText()+"',domicilio='"+txtDomicilio.getText()+"',telefono='"+txtTelefono.getText()+"',email='"+txtEmail.getText()+"', fechaNacimiento='"+jclrFechaNacimiento.getDate().toString()+"', genero='"+cbxGenero.getSelectedItem().toString()+"' WHERE clave='"+txtClave.getText()+"'"); 
+                    pst.executeUpdate(); 
+                    mostrardatos("");
+                    
+                    limpiar();
+                    JOptionPane.showMessageDialog(null,"Modifico correcto!.");
+                    
+                } catch (SQLException e) {
+                    System.out.print(e.getMessage());
+                }
+        }
+
     }//GEN-LAST:event_tbnActualizar1ActionPerformed
 
     /**
@@ -369,13 +405,12 @@ void mostrardatos(String valor){
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable TablaMecanico;
+    private javax.swing.JTable TablaAlumnos;
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnNuevo;
+    private javax.swing.JComboBox<String> cbxGenero;
     private javax.swing.JMenuItem eliminar;
-    private com.toedter.calendar.JCalendar jCalendar1;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -386,12 +421,13 @@ void mostrardatos(String valor){
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane1;
+    private com.toedter.calendar.JCalendar jclrFechaNacimiento;
     private javax.swing.JMenuItem modificar;
     private javax.swing.JButton tbnActualizar1;
-    private javax.swing.JTextField txtApellido;
     private javax.swing.JTextField txtBuscar;
-    private javax.swing.JTextField txtCedula;
-    private javax.swing.JTextField txtEdad;
+    private javax.swing.JTextField txtClave;
+    private javax.swing.JTextField txtDomicilio;
+    private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
